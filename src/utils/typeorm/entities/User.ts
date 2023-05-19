@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'users' })
@@ -7,15 +12,18 @@ export class User {
   id: string;
 
   @Column({ name: 'first_name' })
-  firstname: string;
+  firstName: string;
 
   @Column({ name: 'last_name' })
-  lastname: string;
+  lastName: string;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Column()
   @Exclude()
   password: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 }
