@@ -4,6 +4,7 @@ import { SERVICES } from '../utils/constants';
 import { AuthService } from './auth.service';
 import { UserModule } from '../user/user.module';
 import { LocalStrategy } from './utils/LocalStrategy';
+import { SessionSerializer } from './utils/SessionSerializer';
 
 @Module({
   imports: [UserModule],
@@ -14,6 +15,7 @@ import { LocalStrategy } from './utils/LocalStrategy';
       useClass: AuthService,
     },
     LocalStrategy,
+    SessionSerializer,
   ],
 })
 export class AuthModule {}
