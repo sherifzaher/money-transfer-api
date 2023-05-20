@@ -1,8 +1,10 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common';
 
 import { ROUTES, SERVICES } from '../utils/constants';
 import { IAuthService } from './auth';
 import { RegisterUserDto } from './dtos/RegisterUser.dto';
+import { instanceToPlain } from 'class-transformer';
+import { LocalAuthGuard } from './utils/Guards';
 
 @Controller(ROUTES.AUTH)
 export class AuthController {
@@ -10,7 +12,15 @@ export class AuthController {
     @Inject(SERVICES.AUTH) private readonly authService: IAuthService,
   ) {}
   @Post('register')
-  async registerUser(@Body() registerPayload: RegisterUserDto) {
-    return this.authService.registerUser(registerPayload);
+  async register(@Body() registerPayload: RegisterUserDto) {
+    return instanceToPlain(
+      await this.authService.registerUser(registerPayload),
+    );
+  }
+
+  @Post('login')
+  @UseGuards(LocalAuthGuard)
+  async login() {
+    return 'ok';
   }
 }
